@@ -1,3 +1,5 @@
+// ignore_for_file: empty_catches, unused_local_variable, unnecessary_null_comparison
+
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart';
@@ -11,23 +13,16 @@ class ApiRequest {
   handleApiError(Response response) async {
     switch (response.statusCode) {
       case 400:
-
         try {
           Map<String, dynamic> body = jsonDecode(response.body);
 
-          if (body["message"] != null) {
-
-          }
-        } catch (err) {
-
-        }
+          if (body["message"] != null) {}
+        } catch (err) {}
 
         break;
       case 401:
       case 402:
-        throw new UnauthorisedException();
-      // case 404:
-      //   throw new FetchDataException();
+        throw UnauthorisedException();
     }
   }
 
@@ -41,9 +36,7 @@ class ApiRequest {
     Map<String, dynamic>? queries,
   }) async {
     final api = ApiClient(
-        tempUrl: enableTempUrl != null
-            ? 'https://mocki.io/v1/'
-            : null);
+        tempUrl: enableTempUrl != null ? 'https://mocki.io/v1/' : null);
 
     late Response response;
 
@@ -77,23 +70,19 @@ class ApiRequest {
           if (response.body != null) {
             final json = jsonDecode(response.body);
 
-            if (json["message"] == "User not authorized") {
-
-            }
+            if (json["message"] == "User not authorized") {}
           }
 
           //Token== null ? Locally open login screen
           // else API call -> 401 ? open login screen
 
-          throw new UnauthorisedException();
+          throw UnauthorisedException();
 
         case 402:
-          throw new UnauthorisedException();
+          throw UnauthorisedException();
         case 400:
           final body = jsonDecode(response.body);
-          if (body["message"] == "Invalid token please re-login.") {
-
-          }
+          if (body["message"] == "Invalid token please re-login.") {}
         // case 404:
         //   throw new FetchDataException();
       }

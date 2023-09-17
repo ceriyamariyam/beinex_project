@@ -92,7 +92,7 @@ class _ProductTableScreenState extends State<ProductTableScreen> {
                                 'Item 1',
                                 style: TextStyle(color: Colors.white),
                               ),
-                             
+                            VerticalDivider(color: Colors.grey,),
                               Text(
                                 'Item 2',
                                 style: TextStyle(color: Colors.white),
@@ -138,6 +138,18 @@ class _ProductTableScreenState extends State<ProductTableScreen> {
                                   currentProduct.status!.totalCount!;
 
                       return DataRow(
+                        onLongPress: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => ProductDetailsGraphScreen(
+                                id: currentProduct.itemId.toString(),
+                                title: currentProduct.title.toString(),
+                                itemType1: currentProduct.itemType1,
+                                itemType2: currentProduct.itemType2,
+                              ),
+                            ),
+                          );
+                        },
                         color: MaterialStateColor.resolveWith((states) {
                           return currentProduct.active ?? false
                               ? Colors.white
@@ -174,9 +186,9 @@ class _ProductTableScreenState extends State<ProductTableScreen> {
                                 minHeight: 20,
                                 borderRadius: BorderRadius.circular(4),
                                 backgroundColor: Colors.transparent,
-                                valueColor:
-                                    AlwaysStoppedAnimation<Color>(Color(0xFFB14C4C)),
-                                value: progress, 
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    Color(0xFFB14C4C)),
+                                value: progress,
                               ),
                             ),
                           ),
@@ -186,9 +198,7 @@ class _ProductTableScreenState extends State<ProductTableScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(currentProduct.itemType1?.value ?? ""),
-                               
-                                Text(currentProduct.itemType2?.value ??
-                                    ""), 
+                                Text(currentProduct.itemType2?.value ?? ""),
                               ],
                             ),
                           ),
