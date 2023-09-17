@@ -55,9 +55,9 @@ class ProductDetailsGraphScreen extends StatelessWidget {
                   ]),
             ),
           ),
-          //Bar chart
+          //Bar chart with sample data
           CustomVerticalBarChart(),
-          //Donut chart
+          //Donut chart with sample data
           CustomDonutChart(),
         ]),
       ),

@@ -92,7 +92,9 @@ class _ProductTableScreenState extends State<ProductTableScreen> {
                                 'Item 1',
                                 style: TextStyle(color: Colors.white),
                               ),
-                            VerticalDivider(color: Colors.grey,),
+                              VerticalDivider(
+                                color: Colors.grey,
+                              ),
                               Text(
                                 'Item 2',
                                 style: TextStyle(color: Colors.white),
@@ -102,29 +104,36 @@ class _ProductTableScreenState extends State<ProductTableScreen> {
                         ],
                       ),
                     ),
-                    // DataColumn(
-                    //   label: Column(
-                    //     crossAxisAlignment: CrossAxisAlignment.center,
-                    //     mainAxisAlignment: MainAxisAlignment.center,
-                    //     children: [
-                    //       Text('Levels',style: TextStyle(color: Colors.white),),
-                    //       Row(
-                    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //         crossAxisAlignment: CrossAxisAlignment.start,
-                    //         children: [
-                    //           Text('Level 1',style: TextStyle(color: Colors.white),),
-                    //           VerticalDivider(
-                    //             color: Colors
-                    //                 .grey, // Choose the color of the divider
-                    //             thickness:
-                    //                 1.0, // Adjust the thickness as needed
-                    //           ),
-                    //           Text('Level 2',style: TextStyle(color: Colors.white),),
-                    //         ],
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
+                    DataColumn(
+                      label: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Levels',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Level 1',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              VerticalDivider(
+                                color: Colors.grey,
+                                thickness: 1.0,
+                              ),
+                              Text(
+                                'Level 2',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                   rows: List<DataRow>.generate(
                     productDetails!.length,
@@ -139,16 +148,18 @@ class _ProductTableScreenState extends State<ProductTableScreen> {
 
                       return DataRow(
                         onLongPress: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => ProductDetailsGraphScreen(
-                                id: currentProduct.itemId.toString(),
-                                title: currentProduct.title.toString(),
-                                itemType1: currentProduct.itemType1,
-                                itemType2: currentProduct.itemType2,
+                          if (currentProduct.active == true) {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => ProductDetailsGraphScreen(
+                                  id: currentProduct.itemId.toString(),
+                                  title: currentProduct.title.toString(),
+                                  itemType1: currentProduct.itemType1,
+                                  itemType2: currentProduct.itemType2,
+                                ),
                               ),
-                            ),
-                          );
+                            );
+                          }
                         },
                         color: MaterialStateColor.resolveWith((states) {
                           return currentProduct.active ?? false
@@ -158,23 +169,37 @@ class _ProductTableScreenState extends State<ProductTableScreen> {
                         cells: [
                           DataCell(GestureDetector(
                               onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ProductDetailsGraphScreen(
-                                      id: currentProduct.itemId.toString(),
-                                      title: currentProduct.title.toString(),
-                                      itemType1: currentProduct.itemType1,
-                                      itemType2: currentProduct.itemType2,
+                                if (currentProduct.active == true) {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ProductDetailsGraphScreen(
+                                        id: currentProduct.itemId.toString(),
+                                        title: currentProduct.title.toString(),
+                                        itemType1: currentProduct.itemType1,
+                                        itemType2: currentProduct.itemType2,
+                                      ),
                                     ),
-                                  ),
-                                );
+                                  );
+                                }
                               },
                               child:
                                   Text(currentProduct.id?.toString() ?? ""))),
                           DataCell(
                               Text(currentProduct.itemId?.toString() ?? "")),
-                          DataCell(Text(currentProduct.title ?? "")),
+                          DataCell(
+                            Container(
+                              constraints: BoxConstraints(maxWidth: 200),
+                              child: Text(
+                                currentProduct.title ?? "",
+                                style: TextStyle(
+                                  height: 1.5,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 5,
+                              ),
+                            ),
+                          ),
                           DataCell(DatePickerCell(
                             initialDate: currentProduct.date ?? "",
                             overdue: currentProduct.overdue ?? true,
@@ -202,21 +227,32 @@ class _ProductTableScreenState extends State<ProductTableScreen> {
                               ],
                             ),
                           ),
-                          // DataCell(
-                          //   Row(
-                          //     crossAxisAlignment: CrossAxisAlignment.start,
-                          //     children: [
-                          //       Text(currentProduct.level1?.value ??
-                          //           ""), // Use ?. here
-                          //       VerticalDivider(
-                          //         color: Colors.grey,
-                          //         thickness: 1.0,
-                          //       ),
-                          //       Text(currentProduct.level2?.value ??
-                          //           ""), // Use ?. here
-                          //     ],
-                          //   ),
-                          // ),
+                          DataCell(
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                if (currentProduct.level1 != null)
+                                  ...currentProduct.level1!.map((level1Item) {
+                                    if (level1Item.value != null) {
+                                      return Text(level1Item.value ?? "");
+                                    } else {
+                                      return Text('N/A');
+                                    }
+                                  }).toList(),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                if (currentProduct.level2 != null)
+                                  ...currentProduct.level2!.map((level2Item) {
+                                    if (level2Item.value != null) {
+                                      return Text(level2Item.value ?? "");
+                                    } else {
+                                      return Text('N/A');
+                                    }
+                                  }).toList(),
+                              ],
+                            ),
+                          ),
                         ],
                       );
                     },
