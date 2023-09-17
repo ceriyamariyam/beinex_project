@@ -12,7 +12,6 @@ class ProductInterface {
         method: ApiMethod.GET,
         route: '21eb3c42-9516-480f-b28d-d854f4962b80',
       );
-      print("Product response:::$response");
       return (response as List)
           .map((e) => ProductDetails.fromJson(e))
           .toList();

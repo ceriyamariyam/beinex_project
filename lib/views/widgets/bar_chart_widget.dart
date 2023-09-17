@@ -1,11 +1,9 @@
 
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors
 
 import 'package:beinex_project/Models/product_model.dart';
-import 'package:beinex_project/provider/product_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:provider/provider.dart';
 
 class CustomVerticalBarChart extends StatefulWidget {
   @override
@@ -14,34 +12,14 @@ class CustomVerticalBarChart extends StatefulWidget {
 
 class _CustomVerticalBarChartState extends State<CustomVerticalBarChart> {
     bool isLoading = true;
-  @override
-  void initState() {
-    // Provider.of<ProductProvider>(context, listen: false)
-    //     .fetch()
-    //     .then((value) {
-    //       print("Success:::");
-    //   setState(() {
-    //     isLoading = false;
-    //   });
-    // });
-   // product();
-    super.initState();
-  }
-  List<ProductDetails>? productDetails;
-product() async {
-     print("product 1>>>>>");
 
-    productDetails = await Provider.of<ProductProvider>(context, listen: false)
-        .fetch();
-  // print("ID:::$id");
-   print("Product Deatils::${productDetails![0].id}");
-  }
+  List<ProductDetails>? productDetails;
+
    final List<ChartData> chartData = [
     ChartData('Category 1', 25),
     ChartData('Category 2', 40),
     ChartData('Category 3', 30),
     ChartData('Category 4', 45),
-    // Add more data points as needed
   ];
 
   @override

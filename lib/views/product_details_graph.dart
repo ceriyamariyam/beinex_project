@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:beinex_project/Models/product_model.dart';
-import 'package:beinex_project/views/bar_chart_widget.dart';
-import 'package:beinex_project/views/dount_chart.dart';
+import 'package:beinex_project/views/widgets/bar_chart_widget.dart';
+import 'package:beinex_project/views/widgets/dount_chart.dart';
 import 'package:flutter/material.dart';
 
 class ProductDetailsGraphScreen extends StatelessWidget {
@@ -14,14 +14,12 @@ class ProductDetailsGraphScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        print("Item type 1::${itemType1!.value}");
 
     return Scaffold(body: SingleChildScrollView(
       child: Column(children: [
         Container(
     
         width: MediaQuery.of(context).size.width,
-       // height: 200,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -46,7 +44,9 @@ class ProductDetailsGraphScreen extends StatelessWidget {
           ]),
         ),
       ),
+      //Bar chart
       CustomVerticalBarChart(),
+      //Donut chart
       CustomDonutChart(),
       ]),
     ),);

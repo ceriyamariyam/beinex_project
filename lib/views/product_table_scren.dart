@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors
 
 import 'package:beinex_project/Models/product_model.dart';
 import 'package:beinex_project/provider/product_provider.dart';
@@ -23,8 +23,6 @@ class _ProductTableScreenState extends State<ProductTableScreen> {
   }
 
   product() async {
-    print("product 1>>>>>");
-
     final details =
         await Provider.of<ProductProvider>(context, listen: false).fetch();
 
@@ -50,32 +48,55 @@ class _ProductTableScreenState extends State<ProductTableScreen> {
                   headingRowColor: MaterialStateColor.resolveWith((states) {
                     return Color(0xFF003b6d);
                   }),
-                  border: TableBorder.all(
-                      color: Colors.grey), 
+                  border: TableBorder.all(color: Colors.grey),
                   columns: [
-                    DataColumn(label: Text('Id',style: TextStyle(color: Colors.white),)),
-                    DataColumn(label: Text('Item Id',style: TextStyle(color: Colors.white),)),
-                    DataColumn(label: Text('Title',style: TextStyle(color: Colors.white),)),
-                    DataColumn(label: Text('Date',style: TextStyle(color: Colors.white),)),
-                    DataColumn(label: Text('Status',style: TextStyle(color: Colors.white),)),
+                    DataColumn(
+                        label: Text(
+                      'Id',
+                      style: TextStyle(color: Colors.white),
+                    )),
+                    DataColumn(
+                        label: Text(
+                      'Item Id',
+                      style: TextStyle(color: Colors.white),
+                    )),
+                    DataColumn(
+                        label: Text(
+                      'Title',
+                      style: TextStyle(color: Colors.white),
+                    )),
+                    DataColumn(
+                        label: Text(
+                      'Date',
+                      style: TextStyle(color: Colors.white),
+                    )),
+                    DataColumn(
+                        label: Text(
+                      'Status',
+                      style: TextStyle(color: Colors.white),
+                    )),
                     DataColumn(
                       label: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('Item Type',style: TextStyle(color: Colors.white),),
+                          Text(
+                            'Item Type',
+                            style: TextStyle(color: Colors.white),
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Item 1',style: TextStyle(color: Colors.white),),
-                              VerticalDivider(
-                                color: Colors
-                                    .grey, // Choose the color of the divider
-                                thickness:
-                                    1.0, // Adjust the thickness as needed
+                              Text(
+                                'Item 1',
+                                style: TextStyle(color: Colors.white),
                               ),
-                              Text('Item 2',style: TextStyle(color: Colors.white),),
+                             
+                              Text(
+                                'Item 2',
+                                style: TextStyle(color: Colors.white),
+                              ),
                             ],
                           ),
                         ],
@@ -110,13 +131,18 @@ class _ProductTableScreenState extends State<ProductTableScreen> {
                     (index) {
                       final currentProduct = productDetails![index];
                       double progress =
-                          currentProduct?.status?.totalCount == null ||
+                          currentProduct.status?.totalCount == null ||
                                   currentProduct.status!.totalCount == 0
                               ? 0.0
                               : currentProduct.status!.currentCount! /
                                   currentProduct.status!.totalCount!;
 
                       return DataRow(
+                        color: MaterialStateColor.resolveWith((states) {
+                          return currentProduct.active ?? false
+                              ? Colors.white
+                              : Colors.grey;
+                        }),
                         cells: [
                           DataCell(GestureDetector(
                               onTap: () {
@@ -145,13 +171,12 @@ class _ProductTableScreenState extends State<ProductTableScreen> {
                             SizedBox(
                               width: 100,
                               child: LinearProgressIndicator(
-                                minHeight: 10,
-                                borderRadius: BorderRadius.circular(2),
-                                backgroundColor: Colors.grey,
+                                minHeight: 20,
+                                borderRadius: BorderRadius.circular(4),
+                                backgroundColor: Colors.transparent,
                                 valueColor:
-                                    AlwaysStoppedAnimation<Color>(Colors.red),
-                                value: progress ??
-                                    0.0, // Use a default value if progress is null
+                                    AlwaysStoppedAnimation<Color>(Color(0xFFB14C4C)),
+                                value: progress, 
                               ),
                             ),
                           ),
@@ -161,16 +186,13 @@ class _ProductTableScreenState extends State<ProductTableScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(currentProduct.itemType1?.value ?? ""),
-                                // VerticalDivider(
-                                //   color: Colors.grey,
-                                //   thickness: 1.0,
-                                // ),
+                               
                                 Text(currentProduct.itemType2?.value ??
-                                    ""), // Use ?. here
+                                    ""), 
                               ],
                             ),
                           ),
-                         // DataCell(
+                          // DataCell(
                           //   Row(
                           //     crossAxisAlignment: CrossAxisAlignment.start,
                           //     children: [
