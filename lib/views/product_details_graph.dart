@@ -41,7 +41,7 @@ class ProductDetailsGraphScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                      height: 10,
+                      height: 15,
                     ),
                     Text(
                       id,
