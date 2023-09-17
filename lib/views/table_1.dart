@@ -111,7 +111,7 @@ class _TableScreenState extends State<TableScreen> {
           // ),
           if (date != null)
             DataCell(DatePickerCell(
-              initialDate: date!,
+              initialDate:item['date'],
               overdue: item['overdue'],
             )),
           //  DataCell(  Text(

@@ -2,16 +2,17 @@
 
 import 'package:beinex_project/Models/product_model.dart';
 import 'package:beinex_project/provider/product_provider.dart';
+import 'package:beinex_project/uitls/common/table_common_widgets.dart';
 import 'package:beinex_project/views/product_details_graph.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class MyDataGrid extends StatefulWidget {
+class ProductTableScreen extends StatefulWidget {
   @override
-  State<MyDataGrid> createState() => _MyDataGridState();
+  State<ProductTableScreen> createState() => _ProductTableScreenState();
 }
 
-class _MyDataGridState extends State<MyDataGrid> {
+class _ProductTableScreenState extends State<ProductTableScreen> {
   bool _isLoading = true;
   List<ProductDetails>? productDetails;
 
@@ -47,59 +48,57 @@ class _MyDataGridState extends State<MyDataGrid> {
                     const EdgeInsets.symmetric(vertical: 30, horizontal: 5),
                 child: DataTable(
                   headingRowColor: MaterialStateColor.resolveWith((states) {
-                    return Colors
-                        .blue; // Set the background color of the title row (header row) to blue
+                    return Color(0xFF003b6d);
                   }),
                   border: TableBorder.all(
-                      color: Colors.grey), // Add a border to the table
+                      color: Colors.grey), 
                   columns: [
-                    DataColumn(label: Text('Id')),
-                    DataColumn(label: Text('Item Id')),
-                    DataColumn(label: Text('Title')),
-                    DataColumn(label: Text('Date')),
-                    // DataColumn(label: Text('Status')),
-
+                    DataColumn(label: Text('Id',style: TextStyle(color: Colors.white),)),
+                    DataColumn(label: Text('Item Id',style: TextStyle(color: Colors.white),)),
+                    DataColumn(label: Text('Title',style: TextStyle(color: Colors.white),)),
+                    DataColumn(label: Text('Date',style: TextStyle(color: Colors.white),)),
+                    DataColumn(label: Text('Status',style: TextStyle(color: Colors.white),)),
+                    DataColumn(
+                      label: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Item Type',style: TextStyle(color: Colors.white),),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Item 1',style: TextStyle(color: Colors.white),),
+                              VerticalDivider(
+                                color: Colors
+                                    .grey, // Choose the color of the divider
+                                thickness:
+                                    1.0, // Adjust the thickness as needed
+                              ),
+                              Text('Item 2',style: TextStyle(color: Colors.white),),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                     // DataColumn(
                     //   label: Column(
                     //     crossAxisAlignment: CrossAxisAlignment.center,
                     //     mainAxisAlignment: MainAxisAlignment.center,
                     //     children: [
-                    //       Text('Item Type'),
+                    //       Text('Levels',style: TextStyle(color: Colors.white),),
                     //       Row(
                     //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     //         crossAxisAlignment: CrossAxisAlignment.start,
                     //         children: [
-                    //           Text('Item 1'),
+                    //           Text('Level 1',style: TextStyle(color: Colors.white),),
                     //           VerticalDivider(
                     //             color: Colors
                     //                 .grey, // Choose the color of the divider
                     //             thickness:
                     //                 1.0, // Adjust the thickness as needed
                     //           ),
-                    //           Text('Item 2'),
-                    //         ],
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
-                    // DataColumn(
-                    //   label: Column(
-                    //     crossAxisAlignment: CrossAxisAlignment.center,
-                    //     mainAxisAlignment: MainAxisAlignment.center,
-                    //     children: [
-                    //       Text('Levels'),
-                    //       Row(
-                    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //         crossAxisAlignment: CrossAxisAlignment.start,
-                    //         children: [
-                    //           Text('Level 1'),
-                    //           VerticalDivider(
-                    //             color: Colors
-                    //                 .grey, // Choose the color of the divider
-                    //             thickness:
-                    //                 1.0, // Adjust the thickness as needed
-                    //           ),
-                    //           Text('Level 2'),
+                    //           Text('Level 2',style: TextStyle(color: Colors.white),),
                     //         ],
                     //       ),
                     //     ],
@@ -110,61 +109,79 @@ class _MyDataGridState extends State<MyDataGrid> {
                     productDetails!.length,
                     (index) {
                       final currentProduct = productDetails![index];
+                      double progress =
+                          currentProduct?.status?.totalCount == null ||
+                                  currentProduct.status!.totalCount == 0
+                              ? 0.0
+                              : currentProduct.status!.currentCount! /
+                                  currentProduct.status!.totalCount!;
+
                       return DataRow(
                         cells: [
                           DataCell(GestureDetector(
-                            onTap: (){
-                         Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => ProductDetailsGraphScreen(
-                      id: currentProduct.itemId.toString(),
-                      title: currentProduct.title.toString(),
-                      itemType1: currentProduct.itemType1,
-                      itemType2: currentProduct.itemType2,
-                    ),
-                  ),
-                );      
-                            },
-                            child: Text(currentProduct.id?.toString() ?? ""))),
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProductDetailsGraphScreen(
+                                      id: currentProduct.itemId.toString(),
+                                      title: currentProduct.title.toString(),
+                                      itemType1: currentProduct.itemType1,
+                                      itemType2: currentProduct.itemType2,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child:
+                                  Text(currentProduct.id?.toString() ?? ""))),
                           DataCell(
                               Text(currentProduct.itemId?.toString() ?? "")),
                           DataCell(Text(currentProduct.title ?? "")),
-                          DataCell(Text(currentProduct.date ?? "")),
-
-                          //  DataCell(
-                          // SizedBox(
-                          //   width: 100,
-                          //   child: LinearProgressIndicator(
-                          //     minHeight: 10,
-                          //     borderRadius: BorderRadius.circular(2),
-                          //     backgroundColor: Colors.grey,
-                          //     valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
-                          //     value: progress ?? 0.0, // Use a default value if progress is null
-                          //   ),
-                          // ),
-                          // DataCell(
+                          DataCell(DatePickerCell(
+                            initialDate: currentProduct.date ?? "",
+                            overdue: currentProduct.overdue ?? true,
+                          )),
+                          DataCell(
+                            SizedBox(
+                              width: 100,
+                              child: LinearProgressIndicator(
+                                minHeight: 10,
+                                borderRadius: BorderRadius.circular(2),
+                                backgroundColor: Colors.grey,
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.red),
+                                value: progress ??
+                                    0.0, // Use a default value if progress is null
+                              ),
+                            ),
+                          ),
+                          DataCell(
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(currentProduct.itemType1?.value ?? ""),
+                                // VerticalDivider(
+                                //   color: Colors.grey,
+                                //   thickness: 1.0,
+                                // ),
+                                Text(currentProduct.itemType2?.value ??
+                                    ""), // Use ?. here
+                              ],
+                            ),
+                          ),
+                         // DataCell(
                           //   Row(
                           //     crossAxisAlignment: CrossAxisAlignment.start,
                           //     children: [
-                          //       Text(currentProduct.itemType1!.value ?? ""),
+                          //       Text(currentProduct.level1?.value ??
+                          //           ""), // Use ?. here
                           //       VerticalDivider(
                           //         color: Colors.grey,
                           //         thickness: 1.0,
                           //       ),
-                          //       Text(currentProduct.itemType2!.value ?? ""),
-                          //     ],
-                          //   ),
-                          // ),
-                          // DataCell(
-                          //   Row(
-                          //     crossAxisAlignment: CrossAxisAlignment.start,
-                          //     children: [
-                          //       Text(currentProduct.level1!.value ?? ""),
-                          //       VerticalDivider(
-                          //         color: Colors.grey,
-                          //         thickness: 1.0,
-                          //       ),
-                          //       Text(currentProduct.level2!.value ?? ""),
+                          //       Text(currentProduct.level2?.value ??
+                          //           ""), // Use ?. here
                           //     ],
                           //   ),
                           // ),

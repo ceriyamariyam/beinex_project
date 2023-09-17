@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         // CustomDonutChart(),
      //  TableScreen(),
       // ProductDetailsGraphScreen(),
-     MyDataGrid()
+     ProductTableScreen()
       ),
     );
   }
